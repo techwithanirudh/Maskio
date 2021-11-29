@@ -2068,21 +2068,21 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   scene("game", ({ level, score }) => {
     layers(["bg", "obj", "ui"], "obj");
     const levelCfg = {
-      width: 64,
-      height: 64,
+      width: 20,
+      height: 20,
       "=": [sprite("block"), solid()],
       $: [sprite("coin"), "coin"],
       "%": [sprite("surprise"), solid(), "coin-surprise"],
       "*": [sprite("surprise"), solid(), "mushroom-surprise"],
       "}": [sprite("unboxed"), solid()],
-      "+": [sprite("portal"), solid(), scale(0.5), "portal"],
+      "+": [sprite("portal"), solid(), "portal"],
       "^": [sprite("virus"), solid(), "dangerous"],
       "#": [sprite("mushroom"), solid(), "mushroom", body()],
-      "!": [sprite("blue-block"), solid(), scale(0.5)],
-      "\xA3": [sprite("blue-brick"), solid(), scale(0.5)],
-      z: [sprite("blue-virus"), solid(), scale(0.5), "dangerous"],
-      "@": [sprite("blue-surprise"), solid(), scale(0.5), "coin-surprise"],
-      x: [sprite("blue-steel"), solid(), scale(0.5)]
+      "!": [sprite("blue-block"), solid()],
+      "\xA3": [sprite("blue-brick"), solid()],
+      z: [sprite("blue-virus"), solid(), "dangerous"],
+      "@": [sprite("blue-surprise"), solid(), "coin-surprise"],
+      x: [sprite("blue-steel"), solid()]
     };
     const gameLevel = addLevel(maps[level], levelCfg);
     add([text(`MASKIO
@@ -2237,22 +2237,20 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
       }
     });
     player2.collides("portal", () => {
-      keyPress("down", () => {
-        play("portal");
-        music.stop();
-        if (parseInt(level + 1) < maps.length) {
-          go("game", {
-            level: (level + 1) % maps.length,
-            score: scoreLabel.value
-          });
-        } else {
-          go("info", {
-            score: scoreLabel.value,
-            time: timer.time.toFixed(2),
-            infoText: "You Win!"
-          });
-        }
-      });
+      play("portal");
+      music.stop();
+      if (parseInt(level + 1) < maps.length) {
+        go("game", {
+          level: (level + 1) % maps.length,
+          score: scoreLabel.value
+        });
+      } else {
+        go("info", {
+          score: scoreLabel.value,
+          time: timer.time.toFixed(2),
+          infoText: "You Win!"
+        });
+      }
       mouseClick(() => {
         play("portal");
         music.stop();
