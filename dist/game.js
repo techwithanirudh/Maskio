@@ -2076,11 +2076,11 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       "*": [sprite("surprise"), solid(), scale(0.3), "mushroom-surprise"],
       "}": [sprite("unboxed"), solid(), scale(0.3)],
       "+": [sprite("portal"), solid(), scale(0.3), "portal"],
-      "^": [sprite("virus"), solid(), scale(0.2), "dangerous"],
+      "^": [sprite("virus"), solid(), scale(0.15), "dangerous"],
       "#": [sprite("mushroom"), solid(), scale(0.3), "mushroom", body()],
       "!": [sprite("blue-block"), scale(0.3), solid()],
       "\xA3": [sprite("blue-brick"), scale(0.3), solid()],
-      z: [sprite("blue-virus"), solid(), scale(0.2), "dangerous"],
+      z: [sprite("blue-virus"), solid(), scale(0.15), "dangerous"],
       "@": [sprite("blue-surprise"), solid(), scale(0.3), "coin-surprise"],
       x: [sprite("blue-steel"), scale(0.3), solid()]
     };
@@ -2128,36 +2128,6 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
         music.stop();
       }
     });
-    function big() {
-      let timer2 = 0;
-      let isBig = false;
-      return {
-        update() {
-          if (isBig) {
-            CURRENT_JUMP_FORCE = BIG_JUMP_FORCE;
-            timer2 -= dt();
-            if (timer2 <= 0) {
-              this.smallify();
-            }
-          }
-        },
-        isBig() {
-          return isBig;
-        },
-        smallify() {
-          this.scale = vec2(1).scale(0.3);
-          CURRENT_JUMP_FORCE = JUMP_FORCE;
-          timer2 = 0;
-          isBig = false;
-        },
-        biggify(time) {
-          this.scale = vec2(2).scale(0.3);
-          timer2 = time;
-          isBig = true;
-        }
-      };
-    }
-    __name(big, "big");
     const music = play("OtherworldlyFoe", { loop: true });
     music.volume(0.5);
     const player2 = add([
@@ -2344,10 +2314,9 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
     ]);
     add([
       sprite("maskio"),
-      scale(0.3),
       origin("center"),
       pos(width() / 2, height() / 2 - 20),
-      scale(1),
+      scale(0.3),
       layer("obj")
     ]);
     if (showInfo) {

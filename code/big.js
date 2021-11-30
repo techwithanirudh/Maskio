@@ -16,13 +16,13 @@ function big() {
 			return isBig;
 		},
 		smallify() {
-			this.scale = vec2(1);
+			this.scale = vec2(1).scale(0.3);
 			CURRENT_JUMP_FORCE = JUMP_FORCE;
 			timer = 0;
 			isBig = false;
 		},
 		biggify(time) {
-			this.scale = vec2(2);
+			this.scale = vec2(2).scale(0.3);
 			timer = time;
 			isBig = true;
 		},

@@ -222,13 +222,13 @@ scene("game", ({ level, score }) => {
 		$: [sprite("coin"), scale(0.3), "coin"],
 		"%": [sprite("surprise"), solid(), scale(0.3), "coin-surprise"],
 		"*": [sprite("surprise"), solid(), scale(0.3), "mushroom-surprise"],
-		"}": [sprite("unboxed"), solid(), scale(0.3), ],
+		"}": [sprite("unboxed"), solid(), scale(0.3)],
 		"+": [sprite("portal"), solid(), scale(0.3), "portal"],
-		"^": [sprite("virus"), solid(), scale(0.2), "dangerous"],
+		"^": [sprite("virus"), solid(), scale(0.15), "dangerous"],
 		"#": [sprite("mushroom"), solid(), scale(0.3), "mushroom", body()],
 		"!": [sprite("blue-block"), scale(0.3), solid()],
 		"£": [sprite("blue-brick"), scale(0.3), solid()],
-		z: [sprite("blue-virus"), solid(), scale(0.2), "dangerous"],
+		z: [sprite("blue-virus"), solid(), scale(0.15), "dangerous"],
 		"@": [sprite("blue-surprise"), solid(), scale(0.3), "coin-surprise"],
 		x: [sprite("blue-steel"), scale(0.3), solid()],
 	};
@@ -295,36 +295,6 @@ scene("game", ({ level, score }) => {
 			music.stop();
 		}
 	});
-
-	function big() {
-		let timer = 0;
-		let isBig = false;
-		return {
-			update() {
-				if (isBig) {
-					CURRENT_JUMP_FORCE = BIG_JUMP_FORCE;
-					timer -= dt();
-					if (timer <= 0) {
-						this.smallify();
-					}
-				}
-			},
-			isBig() {
-				return isBig;
-			},
-			smallify() {
-				this.scale = vec2(1).scale(0.3);
-				CURRENT_JUMP_FORCE = JUMP_FORCE;
-				timer = 0;
-				isBig = false;
-			},
-			biggify(time) {
-				this.scale = vec2(2).scale(0.3);
-				timer = time;
-				isBig = true;
-			},
-		};
-	}
 
 	const music = play("OtherworldlyFoe", { loop: true });
 
@@ -555,10 +525,9 @@ scene("info", ({ score, time, infoText, showInfo }) => {
 
 	add([
 		sprite("maskio"),
-		scale(0.3),
 		origin("center"),
 		pos(width() / 2, height() / 2 - 20),
-		scale(1),
+		scale(0.3),
 		layer("obj"),
 	]);
 	if (showInfo) {
