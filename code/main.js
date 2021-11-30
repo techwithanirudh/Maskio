@@ -218,19 +218,19 @@ scene("game", ({ level, score }) => {
 	const levelCfg = {
 		width: 20,
 		height: 20,
-		"=": [sprite("block"), solid()],
-		$: [sprite("coin"), "coin"],
-		"%": [sprite("surprise"), solid(), "coin-surprise"],
-		"*": [sprite("surprise"), solid(), "mushroom-surprise"],
-		"}": [sprite("unboxed"), solid()],
-		"+": [sprite("portal"), solid(), "portal"],
-		"^": [sprite("virus"), solid(), "dangerous"],
-		"#": [sprite("mushroom"), solid(), "mushroom", body()],
-		"!": [sprite("blue-block"), solid()],
-		"£": [sprite("blue-brick"), solid()],
-		z: [sprite("blue-virus"), solid(), "dangerous"],
-		"@": [sprite("blue-surprise"), solid(), "coin-surprise"],
-		x: [sprite("blue-steel"), solid()],
+		"=": [sprite("block"), scale(0.3), solid()],
+		$: [sprite("coin"), scale(0.3), "coin"],
+		"%": [sprite("surprise"), solid(), scale(0.3), "coin-surprise"],
+		"*": [sprite("surprise"), solid(), scale(0.3), "mushroom-surprise"],
+		"}": [sprite("unboxed"), solid(), scale(0.3), ],
+		"+": [sprite("portal"), solid(), scale(0.3), "portal"],
+		"^": [sprite("virus"), solid(), scale(0.2), "dangerous"],
+		"#": [sprite("mushroom"), solid(), scale(0.3), "mushroom", body()],
+		"!": [sprite("blue-block"), scale(0.3), solid()],
+		"£": [sprite("blue-brick"), scale(0.3), solid()],
+		z: [sprite("blue-virus"), solid(), scale(0.2), "dangerous"],
+		"@": [sprite("blue-surprise"), solid(), scale(0.3), "coin-surprise"],
+		x: [sprite("blue-steel"), scale(0.3), solid()],
 	};
 
 	const gameLevel = addLevel(maps[level], levelCfg);
@@ -246,7 +246,7 @@ scene("game", ({ level, score }) => {
 		},
 	]);
 
-	const coinImg = add([sprite("coin"), pos(160 - 15, 3), layer("ui")]);
+	const coinImg = add([sprite("coin"), scale(0.3), pos(160 - 15, 3), layer("ui")]);
 
 	// const builder = add([
 	// 	rect(55, 20),
@@ -332,6 +332,7 @@ scene("game", ({ level, score }) => {
 
 	const player = add([
 		sprite("maskio"),
+		scale(0.3),
 		solid(),
 		pos(30, 0),
 		body(),
@@ -554,6 +555,7 @@ scene("info", ({ score, time, infoText, showInfo }) => {
 
 	add([
 		sprite("maskio"),
+		scale(0.3),
 		origin("center"),
 		pos(width() / 2, height() / 2 - 20),
 		scale(1),
@@ -562,6 +564,7 @@ scene("info", ({ score, time, infoText, showInfo }) => {
 	if (showInfo) {
 		add([
 			sprite("coin"),
+			scale(0.3),
 			layer("obj"),
 			pos(width() / 2 - 5, height() / 2 + 13),
 			origin("center"),
