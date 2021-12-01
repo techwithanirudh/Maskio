@@ -2074,10 +2074,12 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       $: [sprite("coin"), scale(0.3), "coin"],
       "%": [sprite("surprise"), solid(), scale(0.3), "coin-surprise"],
       "*": [sprite("surprise"), solid(), scale(0.3), "mushroom-surprise"],
+      "&": [sprite("surprise"), solid(), scale(0.3), "vaccine-surprise"],
       "}": [sprite("unboxed"), solid(), scale(0.3)],
       "+": [sprite("portal"), solid(), scale(0.3), "portal"],
       "^": [sprite("virus"), solid(), scale(0.15), "dangerous"],
       "#": [sprite("mushroom"), solid(), scale(0.3), "mushroom", body()],
+      ">": [sprite("vaccine"), solid(), scale(0.3), "vaccine", body()],
       "!": [sprite("blue-block"), scale(0.3), solid()],
       "\xA3": [sprite("blue-brick"), scale(0.3), solid()],
       z: [sprite("blue-virus"), solid(), scale(0.15), "dangerous"],
@@ -2095,7 +2097,12 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         value: score
       }
     ]);
-    const coinImg = add([sprite("coin"), scale(0.3), pos(160 - 15, 3), layer("ui")]);
+    const coinImg = add([
+      sprite("coin"),
+      scale(0.3),
+      pos(160 - 15, 3),
+      layer("ui")
+    ]);
     action("button", (b) => {
       if (b.isHovered()) {
         b.use(color(0.7, 0.7, 0.7));
@@ -2144,6 +2151,9 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
     action("mushroom", (m) => {
       m.move(20, 0);
     });
+    action("vaccine", (v) => {
+      v.move(20, 0);
+    });
     player2.on("headbump", (obj) => {
       if (obj.is("coin-surprise")) {
         gameLevel.spawn("$", obj.gridPos.sub(0, 1));
@@ -2157,11 +2167,22 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
         gameLevel.spawn("}", obj.gridPos.sub(0, 0));
         play("blip");
       }
+      if (obj.is("vaccine-surprise")) {
+        gameLevel.spawn(">", obj.gridPos.sub(0, 1));
+        destroy(obj);
+        gameLevel.spawn("}", obj.gridPos.sub(0, 0));
+        play("blip");
+      }
     });
     player2.collides("mushroom", (m) => {
       destroy(m);
       play("powerup");
       player2.biggify(6);
+    });
+    player2.collides("vaccine", (v) => {
+      destroy(v);
+      play("powerup");
+      window.vaccine = true;
     });
     let coinPitch = 0;
     action(() => {
@@ -2240,6 +2261,8 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
       });
     });
     keyDown("left", () => {
+      player2.flipX(-1);
+      current_direction = directions.LEFT;
       player2.move(-MOVE_SPEED, 0);
       up.pos.x = player2.pos.x - up.width;
       down.pos.x = player2.pos.x - down.width;
@@ -2247,6 +2270,8 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
       right.pos.x = player2.pos.x - 15;
     });
     keyDown("right", () => {
+      player2.flipX(1);
+      current_direction = directions.RIGHT;
       player2.move(MOVE_SPEED, 0);
       up.pos.x = player2.pos.x;
       down.pos.x = player2.pos.x;
@@ -2258,11 +2283,59 @@ ${parseInt(level + 1)}-${maps.length}`), pos(240, 6)]);
         isJumping = false;
       }
     });
-    keyPress("space", () => {
+    keyPress("up", () => {
       if (player2.grounded()) {
         isJumping = true;
         player2.jump(CURRENT_JUMP_FORCE);
       }
+    });
+    keyPress("down", () => {
+      player2.weight = 3;
+    });
+    keyRelease("down", () => {
+      player2.weight = 1;
+    });
+    function spawnBullet(bulletpos) {
+      if (current_direction == directions.LEFT) {
+        bulletpos = bulletpos.sub(10, 0);
+      } else if (current_direction == directions.RIGHT) {
+        bulletpos = bulletpos.add(10, 0);
+      }
+      add([
+        sprite("injection"),
+        scale(0.5),
+        pos(bulletpos),
+        origin("center"),
+        "bullet",
+        {
+          bulletSpeed: current_direction == directions.LEFT ? -1 * BULLET_SPEED : BULLET_SPEED
+        }
+      ]);
+      play("shoot", {
+        volume: 0.2,
+        detune: rand(-1200, 1200)
+      });
+    }
+    __name(spawnBullet, "spawnBullet");
+    action("bullet", (b) => {
+      b.move(b.bulletSpeed, 0);
+      if (b.pos.x < 0) {
+        destroy(b);
+      }
+    });
+    keyPress("space", () => {
+      if (window.vaccine) {
+        spawnBullet(player2.pos);
+      }
+    });
+    collides("bullet", "dangerous", (b, d) => {
+      destroy(b);
+      destroy(d);
+      camShake(4);
+      play("explosion", {
+        volume: 0.2,
+        detune: rand(0, 1200)
+      });
     });
     mouseClick(() => {
       if (player2.grounded()) {

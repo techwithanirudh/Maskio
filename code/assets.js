@@ -1,8 +1,10 @@
 function loadAssets() {
 	loadSprite("maskio", "sprites/maskio.png");
+	loadSprite("vaccine", "sprites/vaccine.png");
 
 	loadSprite("virus", "sprites/virus.png");
 	loadSprite("blue-virus", "sprites/virus.png");
+	loadSprite("injection", "sprites/injection.png");
 
 	loadSprite("brick", "sprites/snow.png");
 	loadSprite("blue-brick", "sprites/snow.png");
@@ -24,6 +26,10 @@ function loadAssets() {
 	loadSound("powerup", "sounds/powerup.mp3");
 	loadSound("blip", "sounds/blip.mp3");
 	loadSound("hit", "sounds/hit.mp3");
+
+	loadSound("shoot", "sounds/shoot.mp3");
+	loadSound("explosion", "sounds/explode.mp3");
+
 	loadSound("portal", "sounds/portal.mp3");
 	loadSound("OtherworldlyFoe", "sounds/OtherworldlyFoe.mp3");
 
