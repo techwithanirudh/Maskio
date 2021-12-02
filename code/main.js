@@ -496,7 +496,7 @@ scene("game", ({ level, score }) => {
     }
     add([
       sprite("injection"),
-	  scale(0.5),
+      scale(0.5),
       pos(bulletpos),
       origin("center"),
       "bullet",
@@ -545,46 +545,64 @@ scene("game", ({ level, score }) => {
   // 	});
   // }
 
-  mouseClick(() => {
-    if (player.grounded()) {
-      isJumping = true;
-      player.jump(CURRENT_JUMP_FORCE);
-    }
-  });
+  //   mouseClick(() => {
+  //     if (player.grounded()) {
+  //       isJumping = true;
+  //       player.jump(CURRENT_JUMP_FORCE);
+  //     }
+  //   });
 
-  var isMobile = navigator.userAgent.match(/Mobile/i) != null;
-  var isTablet = navigator.userAgent.match(/Tablet/i) != null;
+  var isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0;
 
-  if (isMobile || isTablet) {
+  if (isTouchDevice) {
     var playerMove = setInterval(() => {
       player.move(MOVE_SPEED, 0);
     }, 30);
 
     let moveAuto = true;
 
-    mouseDblClick(() => {
-      if (moveAuto) {
-        clearInterval(playerMove);
-      } else {
-        playerMove = setInterval(() => {
-          player.move(MOVE_SPEED, 0);
-        }, 30);
+    window.addEventListener("click", function (evt) {
+      if (evt.detail === 1) {
+        if (player.grounded()) {
+          isJumping = true;
+          player.jump(CURRENT_JUMP_FORCE);
+        }
+      } else if (evt.detail === 2) {
+        if (window.vaccine) {
+          spawnBullet(player.pos);
+        }
+      } else if (evt.detail === 3) {
+        if (moveAuto) {
+          clearInterval(playerMove);
+        } else {
+          playerMove = setInterval(() => {
+            player.move(MOVE_SPEED, 0);
+          }, 30);
+        }
+
+        moveAuto = !moveAuto;
+
+        up.pos.x = player.pos.x;
+        down.pos.x = player.pos.x;
+        left.pos.x = player.pos.x - 25;
+        right.pos.x = player.pos.x + 25;
       }
-
-      moveAuto = !moveAuto;
-
-      up.pos.x = player.pos.x;
-      down.pos.x = player.pos.x;
-      left.pos.x = player.pos.x - 25;
-      right.pos.x = player.pos.x + 25;
     });
   }
 });
 
-scene("info", ({ score, time, infoText, showInfo }) => {
+scene("info", ({ score, time, infoText, showInfo, startScreen }) => {
   if (showInfo == undefined) {
     showInfo = true;
   }
+
+  var isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0;
 
   add([rect(width(), height()), color(0, 0, 0), layer("bg")]);
 
@@ -644,23 +662,23 @@ scene("info", ({ score, time, infoText, showInfo }) => {
   }
 
   add([
-    text("Click up or hit 'space' to jump", 8),
+    text("Click or hit 'up' to jump", 8),
     origin("center"),
     pos(width() / 2 + 10, height() / 2 + 30),
     color(rgb(0.98, 0.6, 0.0)),
     layer("ui"),
   ]);
 
-  if (isMobile || isTablet) {
+  if (isTouchDevice) {
     add([
-      text("Double click to stop moving and get manual control.", 8),
+      text("Double click to shoot vaccines.", 8),
       origin("center"),
       pos(width() / 2 + 10, height() / 2 + 45),
       color(rgb(0.98, 0.6, 0.0)),
       layer("ui"),
     ]);
     add([
-      text("Click on the portal to go to the next level.", 8),
+      text("Thriple click to stop moving and get manual control.", 8),
       origin("center"),
       pos(width() / 2 + 10, height() / 2 + 60),
       color(rgb(0.98, 0.6, 0.0)),
@@ -675,7 +693,8 @@ scene("info", ({ score, time, infoText, showInfo }) => {
     color(rgb(0.98, 0.6, 0.0)),
     layer("ui"),
   ]);
-  if (showInfo) {
+
+  if (showInfo || startScreen) {
     keyPress("space", () => {
       go("game", { level: 0, score: 0 });
     });
@@ -683,15 +702,14 @@ scene("info", ({ score, time, infoText, showInfo }) => {
     mouseClick(() => {
       go("game", { level: 0, score: 0 });
     });
-  } else {
-    keyPress("space", () => {
-      go("menu");
-    });
 
-    mouseClick(() => {
-      go("menu");
-    });
+    window.vaccine = false;
   }
 });
 
-start("menu");
+// start("menu");
+start("info", {
+  infoText: "Corona Virus Superhero Game",
+  showInfo: false,
+  startScreen: true,
+});
