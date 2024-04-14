@@ -1,4 +1,4 @@
-function loadAssets() {
+export function loadAssets() {
 	loadSprite("maskio", "sprites/maskio.png");
 	loadSprite("vaccine", "sprites/vaccine.png");
 

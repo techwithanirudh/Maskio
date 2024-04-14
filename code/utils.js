@@ -1,4 +1,4 @@
-function onClick(btn, cb) {
+export function onClick(btn, cb) {
 	mouseClick(() => {
 		let position = mousePos();
 		if (
@@ -12,7 +12,7 @@ function onClick(btn, cb) {
 	});
 }
 
-function CharacterMovement() {
+export function CharacterMovement() {
 	// Example
 	// createArrow('arrow-up', 'up', width() - 50, height() - 55)
 
@@ -28,7 +28,7 @@ function CharacterMovement() {
 	onClick(right, run)
 }
 
-function run(key) {
+export function run(key) {
 	if (key === "up") {
 		if (player.grounded()) {
 			isJumping = true;
@@ -57,7 +57,7 @@ function run(key) {
 	}
 }
 
-function createArrow(spriteName, key, x, y) {
+export function createArrow(spriteName, key, x, y) {
 	const arrow = add([
 		pos(x, y),
 		sprite(spriteName),

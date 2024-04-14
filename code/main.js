@@ -1,6 +1,10 @@
 import kaboom from "kaboom";
-
-//IMPORTANT: Make sure to use Kaboom version 0.5.0 for this game by adding the correct script tag in the HTML file.
+import { loadAssets } from "./assets";
+import { big } from "./big";
+import { MOVE_SPEED, JUMP_FORCE, BIG_JUMP_FORCE, CURRENT_JUMP_FORCE, FALL_DEATH, ENEMY_SPEED, TIME_LEFT, BULLET_SPEED, directions } from './config'
+import { maps } from "./levels";
+import { patrol } from "./patrol";
+import { onClick } from "./utils";
 
 kaboom({
   global: true,

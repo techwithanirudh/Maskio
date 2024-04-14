@@ -13,3 +13,5 @@ const directions = {
 };
 
 let current_direction = directions.RIGHT;
+
+export { MOVE_SPEED, JUMP_FORCE, BIG_JUMP_FORCE, CURRENT_JUMP_FORCE, FALL_DEATH, ENEMY_SPEED, TIME_LEFT, BULLET_SPEED, directions, current_direction}

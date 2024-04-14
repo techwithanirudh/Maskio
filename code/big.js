@@ -1,5 +1,8 @@
+import { JUMP_FORCE, BIG_JUMP_FORCE } from './config'
+let CURRENT_JUMP_FORCE = JUMP_FORCE;
+
 // custom component that makes stuff grow big
-function big() {
+export function big() {
 	let timer = 0;
 	let isBig = false;
 	return {
