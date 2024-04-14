@@ -33,10 +33,8 @@ function loadAssets() {
 	loadSound("portal", "sounds/portal.mp3");
 	loadSound("OtherworldlyFoe", "sounds/OtherworldlyFoe.mp3");
 
-	loadRoot("https://mario.techwithanirudh.tech/");
-
-	loadSprite("arrow-up", "controls/arrow-circle-up-solid.svg");
-	loadSprite("arrow-down", "controls/arrow-circle-down-solid.svg");
-	loadSprite("arrow-left", "controls/arrow-circle-left-solid.svg");
-	loadSprite("arrow-right", "controls/arrow-circle-right-solid.svg");
+	loadSprite("arrow-up", "sprites/controls/arrow-circle-up-solid.svg");
+	loadSprite("arrow-down", "sprites/controls/arrow-circle-down-solid.svg");
+	loadSprite("arrow-left", "sprites/controls/arrow-circle-left-solid.svg");
+	loadSprite("arrow-right", "sprites/controls/arrow-circle-right-solid.svg");
 }
