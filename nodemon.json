@@ -1,0 +1,7 @@
+{
+    "watch": ["code/", "sounds/", "sprites/", "template.html"],
+    "ext": "js,ts,html,json",
+    "ignore": ["node_modules/", "dist/"],
+    "exec": "npm run build && npm run start"
+  }
+  
