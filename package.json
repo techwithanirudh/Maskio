@@ -1,5 +1,5 @@
 {
-	"name": "mario-updates",
+	"name": "maskio",
 	"dependencies": {
 	  "chokidar": "^3.5.2",
 	  "esbuild": "^0.12.19",
